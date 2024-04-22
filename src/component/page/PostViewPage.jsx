@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -8,7 +8,8 @@ import CommentList from "../list/CommentList";
 import Button from "../ui/Button";
 import TextInput from "../ui/TextInput";
 
-import data from "../../data.json";
+// import data from "../../data.json";//사용 안할거임
+import {db} from "../../firebase.js" //설정 가져오기
 
 const Wrapper = styled.div`
     width: 988px;
@@ -97,12 +98,25 @@ const Styles = {
 
 function PostViewPage(props){
 
+    const [post, setPost] = useState({
+        id:0,
+        title:'',
+        content:'',
+        comments:[],
+    })
+    
+    useEffect(function(){
+        db.collection('post').doc(postId).get().then(function(doc){
+            setPost(doc.data())
+        })
+    }, [])
+
     const navigate = useNavigate();
     const postId = useParams().id
 
-    const post = data.find((item)=>{
-        return item.id === postId; 
-    })
+    // const post = data.find((item)=>{
+    //     return item.id === postId; 
+    // })
 
     const [comment, setComment] = useState('');
 
@@ -115,7 +129,7 @@ function PostViewPage(props){
                     <InfoText>
                         <Date>{post.Date}</Date>
                         <KeywordListWrapper>
-                            {post.KeyWord.map((keyword) => (
+                            {post.Keword && post.KeyWord.map((keyword) => (
                                 <span key={keyword}>{keyword}</span>
                             ))}
                         </KeywordListWrapper >

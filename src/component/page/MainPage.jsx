@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PostList from "../list/PostList";
 import Button from "../ui/Button";
-import data from "../../data.json";
+// import data from "../../data.json";
 import { useNavigate } from "react-router-dom";
 
 import { LuSun } from "react-icons/lu";
 import { LuBrush } from "react-icons/lu";
 import { FiBook } from "react-icons/fi";
 import { LuCalendarCheck } from "react-icons/lu";
-
+// import data from "../../data.json";//사용 안할거임
+import {db} from "../../firebase.js" //설정 가져오기
 
 const Wrapper = styled.div`
     display: flex;
@@ -96,6 +97,18 @@ const Styles = {
 
 
 function MainPage(props){
+
+    const [data, setData] = useState([])
+
+    useEffect(function(){
+        let tempData = []
+        db.collection('post').get().then(function(qs){
+            qs.forEach(function(doc){
+                tempData.push(doc.data())
+            })
+            setData(tempData);
+        })
+    }, [])
 
     const navigate = useNavigate();
 

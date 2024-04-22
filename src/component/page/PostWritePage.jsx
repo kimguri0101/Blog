@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "../ui/Button";
 import TextInput from "../ui/TextInput";
+import {db} from "../../firebase.js" //설정 가져오기
 
 const Wrapper = styled.div`
     width: 988px;
@@ -86,7 +87,10 @@ function PostWritePage(props){
                 </ContentWrapper>
 
                 <ButtonWrapper>
-                    <Button title="업로드" onClick={()=> {alert('업로드 하시겠습니까?')}}></Button>
+                    {/* <Button title="업로드" onClick={()=> {alert('업로드 하시겠습니까?')}}></Button> */}
+                    {/* <Button title="업로드" onClick={function(){
+                        let timestamp = 
+                    }} */}
                     <Button title="취소" onClick={()=> {navigate('/')}}></Button>
                 </ButtonWrapper>
                 
